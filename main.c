@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include "string.h"
+#include <sys/stat.h>
+#include <stdlib.h>
 #include "writer.h"
 #include "os.h"
 
@@ -25,17 +26,26 @@ int main(int argc, char **argv) {
 
 	enum os os = get_os();
 	if (os == windows) {
+		printf("Detected windows\n");
 		path = "~\\AppData\\Roaming\\.minecraft\\versions\\";
 	} else if (os == macos) {
+		printf("Detected Mac OS\n");
 		path = "~/Library/Application Support/minecraft/versions/";
 	} else if (os == linux) {
+		printf("Detected Linux\n");
 		path = "~/.minecraft/versions/";
 	} else {
 		printf("Your Operating System is not supported");
-		return 0;
+		return 1;
 	}
 
-	write(mcVersion, loaderVersion, path, (char) get_file_seperator());
+	if (!mkdir(path, rw_r_r)) {
+		printf("Unable to create directories!");
+		exit(1);
+	}
+
+	create_and_write(mcVersion, loaderVersion, path);
+	printf("Successfully created version fabric-%s-%s\n", mcVersion, loaderVersion);
 
 	return 0;
 }

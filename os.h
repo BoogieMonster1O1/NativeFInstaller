@@ -1,13 +1,18 @@
 #ifndef NATIVEFINSTALLER_OS_H
 #define NATIVEFINSTALLER_OS_H
 
-#include "sutil.h"
+#include <stdio.h>
 
 enum os {
 	windows,
 	macos,
-	linux,
-	other
+	linux
+};
+
+enum permissions {
+	rw_r_r = 0644,
+	rwx_r_r = 0744,
+	rwx_rx_rx = 0755
 };
 
 enum file_seperator {
