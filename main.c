@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "writer.h"
 #include "os.h"
+#include <string.h>
 
 int main(int argc, char **argv) {
 	if (argc < 2) {
@@ -23,6 +24,7 @@ int main(int argc, char **argv) {
 	printf("Minecraft Version: %s\n", mcVersion);
 	printf("Fabric Loader Version: %s\n", loaderVersion);
 	char *path;
+	char *stuffAfter = strcat("fabric-", strcat(mcVersion, strcat("-", loaderVersion)));
 
 	enum os os = get_os();
 	if (os == windows) {
@@ -39,12 +41,12 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
-	if (!mkdir(path, rw_r_r)) {
+	if (!mkdir(strcat(path, stuffAfter), rw_r_r)) {
 		printf("Unable to create directories!");
 		exit(1);
 	}
 
-	create_and_write(mcVersion, loaderVersion, path);
+	create_and_write(mcVersion, loaderVersion, strcat(path, ));
 	printf("Successfully created version fabric-%s-%s\n", mcVersion, loaderVersion);
 
 	return 0;
